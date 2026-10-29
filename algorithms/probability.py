@@ -12,7 +12,6 @@ def normalize(weights: dict) -> dict:
     - Conserve las claves y su orden; no modifique weights.
     - Rechace pesos negativos, no finitos, diccionarios vacíos y suma cero.
     """
-    # TODO: Add your code here
 
     if not weights:
         raise ValueError("Diccionario vacío")
@@ -59,7 +58,6 @@ def expected_utility(distribution: dict, utilities: dict) -> float:
         raise ValueError("La distribución debe sumar uno")
     if any(not math.isfinite(u) for u in utilities.values()):
         raise ValueError("Utilidades no finitas")
-    # TODO: Add your code here
 
     utilidad = 0
 
