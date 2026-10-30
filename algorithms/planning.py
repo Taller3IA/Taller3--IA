@@ -24,8 +24,17 @@ def action_value(mdp, state, action, values):
     - No vuelva a sumar la recompensa del terminal en su valor:
       values[terminal] es cero.
     """
-    # TODO: Add your code here
-    raise NotImplementedError("Complete este bloque TODO")
+    
+    #inicializar el valor esperado
+    expected = 0
+    transitions = mdp.transitions(state, action)
+    for successor, probability in transitions:
+        reward = mdp.reward(state, action, successor)
+        future_value = values[successor ]
+        expected += (reward + (mdp.discount * future_value))*probability
+
+    return expected
+
     # FIN DEL BLOQUE DEL ESTUDIANTE
 
 
@@ -50,11 +59,27 @@ def value_iteration(mdp, tolerance=1e-8, max_iterations=1000):
     # Validación e inicialización desde V0=0.
     if not math.isfinite(tolerance) or tolerance <= 0 or max_iterations < 1:
         raise ValueError('Tolerancia y límite de iteraciones deben ser positivos')
-    values = dict.fromkeys(mdp.states, 0.0)
+    values = dict.fromkeys(mdp.states, 0)
     history, deltas = [values.copy()], []
     for _ in range(max_iterations):
-        # TODO: Add your code here
-        raise NotImplementedError("Complete este bloque TODO")
+        new_values = values.copy()
+        delta = 0
+        for state in mdp.states:
+            actions = mdp.actions(state)
+            if not actions:
+                new_value = 0
+            else:
+                best_value = -math.inf
+                for action in actions:
+                    q = action_value(mdp, state, action, values)
+                    if q > best_value:
+                        best_value = q
+                new_value = best_value
+            delta = max(delta, abs(new_value - values[state]))
+            new_values[state] = new_value
+        values = new_values
+        converged = delta < tolerance
+
         # FIN DEL BLOQUE DEL ESTUDIANTE
         # Copias para la animación y empaquetado del resultado.
         history.append(values.copy())
